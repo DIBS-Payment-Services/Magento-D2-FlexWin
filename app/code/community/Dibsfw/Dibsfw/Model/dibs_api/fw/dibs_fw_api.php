@@ -385,8 +385,8 @@ class dibs_fw_api extends dibs_fw_helpers {
      */
     function dibsflex_api_calcMD5($aData, $bResponse = FALSE) {
         $sMD5key = "";
-        $sMD5key1 = trim($this->dibsflex_helper_getconfig('md51'), " ,\t,\r,\n");
-        $sMD5key2 = trim($this->dibsflex_helper_getconfig('md52'), " ,\t,\r,\n");
+        $sMD5key1 = trim($this->dibsflex_helper_getconfig('md51'));
+        $sMD5key2 = trim($this->dibsflex_helper_getconfig('md52'));
         if ($sMD5key1 != '' && $sMD5key2 != '') {
             if($bResponse === TRUE) {
                 if(isset($aData['fee'])) $iAmount = $aData['amount'] + $aData['fee'];
