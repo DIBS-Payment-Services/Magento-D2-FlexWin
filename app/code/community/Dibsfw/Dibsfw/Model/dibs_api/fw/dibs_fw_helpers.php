@@ -53,30 +53,16 @@ class dibs_fw_helpers extends dibs_fw_helpers_cms implements dibs_fw_helpers_int
             break;
         }
     }
-    /**
-     * https://en.wikipedia.org/wiki/ISO_4217
-     * @var array
-     */
-    public $currenciesWithNotTwoSings = array(   '392' => 0, '048' => 3, '108' => 0, 
-                                                 '974' => 0, '990' => 4, '152' => 0, 
-                                                 '132' => 0, '262' => 0, '324' => 0,
-                                                 '368' => 3, '352' => 0, '400' => 3,
-                                                 '174' => 0, '410' => 0, '414' => 3,
-                                                 '434' => 3, '512' => 3, '600' => 0,
-                                                 '646' => 0, '788' => 3, '800' => 0,
-                                                 '940' => 0, '704' => 0, '548' => 0,
-                                                 '950' => 0, '952' => 0, '953' => 0);
-    
     
     function dibsflex_helper_getOrderObj($mOrderInfo, $bResponse = FALSE) {
         if($bResponse === TRUE) $mOrderInfo->loadByIncrementId((int)$_POST['orderid']);
         
-        $currencyCode = $this->dibsflex_api_getCurrencyValue(
-                               $mOrderInfo->getOrderCurrency()->getCode());
         return (object)array(
             'order_id'  => $mOrderInfo->getRealOrderId(),
-            'total'     => $this->dibsflex_api_float2intSmartRounding($mOrderInfo->getTotalDue(), $this->dibsflex_helper_getCurrencyDecimals($currencyCode)),
-            'currency'  => $currencyCode
+            'total'     => $this->dibsflex_api_float2intSmartRounding($mOrderInfo->getTotalDue()),
+            'currency'  => $this->dibsflex_api_getCurrencyValue(
+                               $mOrderInfo->getOrderCurrency()->getCode()
+                           )
         );
     }
     
@@ -109,36 +95,26 @@ class dibs_fw_helpers extends dibs_fw_helpers_cms implements dibs_fw_helpers_int
                 )
             );
     }
-    
-    function dibsflex_helper_getCurrencyDecimals($currencyValue) {
-        if(key_exists($currencyValue, $this->currenciesWithNotTwoSings)) {
-            return $this->currenciesWithNotTwoSings[$currencyValue];
-        }
-        // for the moost currencies
-        return 2;
-    }
 
     function dibsflex_helper_getShippingObj($mOrderInfo) {
-        $currencyValue = $this->dibsflex_api_getCurrencyValue($mOrderInfo->getOrderCurrencyCode());
         return (object)array(
                 'method' => $mOrderInfo['shipping_description'],
-                'rate'   => $this->dibsflex_api_float2intSmartRounding($mOrderInfo['shipping_amount'], $this->dibsflex_helper_getCurrencyDecimals($currencyValue)),
+                'rate'   => $this->dibsflex_api_float2intSmartRounding($mOrderInfo['shipping_amount']),
                 'tax'    => isset($mOrderInfo['shipping_tax_amount']) ? 
-                            $this->dibsflex_api_float2intSmartRounding($mOrderInfo['shipping_tax_amount'], $this->dibsflex_helper_getCurrencyDecimals($currencyValue)) : 0
+                            $this->dibsflex_api_float2intSmartRounding($mOrderInfo['shipping_tax_amount']) : 0
             );
     }
 
     function dibsflex_helper_getItemsObj($mOrderInfo) {
-        $currencyValue = $this->dibsflex_api_getCurrencyValue($mOrderInfo->getOrderCurrencyCode());
         foreach($mOrderInfo->getAllItems() as $oItem) {
             $oItems[] = (object)array(
                 'item_id'   => $oItem->getProductId(),
                 'name'      => $oItem->getName(),
                 'sku'       => $oItem->getSku(),
-                'price'     => $this->dibsflex_api_float2intSmartRounding($oItem->getPrice(), $this->dibsflex_helper_getCurrencyDecimals($currencyValue)),
+                'price'     => $this->dibsflex_api_float2intSmartRounding($oItem->getPrice()),
                 'qty'       => $this->dibsflex_api_float2intSmartRounding($oItem->getQtyOrdered(), 3),
                 'tax_rate'  => $this->dibsflex_api_float2intSmartRounding($oItem->getTaxAmount() / 
-                                                                          $oItem->getQtyOrdered(), $this->dibsflex_helper_getCurrencyDecimals($currencyValue))
+                                                                          $oItem->getQtyOrdered())
             );
         }
         return $oItems;
@@ -168,7 +144,7 @@ class dibs_fw_helpers extends dibs_fw_helpers_cms implements dibs_fw_helpers_int
     }
     
     function dibsflex_helper_modVersion() {
-        return 'mgn1_3.1.2';
+        return 'mgn1_3.1.3';
     }
 }
 ?>

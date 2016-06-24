@@ -69,6 +69,11 @@ class Dibsfw_Dibsfw_DibsfwController extends Mage_Core_Controller_Front_Action {
         $oOrder = Mage::getModel('sales/order');
 	$fields = array();
         
+      // Clear cart 
+        $quote = Mage::getModel("sales/quote")->load($session->getQuote()->getId());
+        $quote->setIsActive(false);
+        $quote->delete();
+
         $mErr = $this->oDibsModel->dibsflex_api_checkMainFields($oOrder, TRUE);
         if($mErr === FALSE) {
             $fields['successaction'] = '1';
@@ -116,16 +121,9 @@ class Dibsfw_Dibsfw_DibsfwController extends Mage_Core_Controller_Front_Action {
                            'dibs_orderdata', $fields,'orderid='.$oOrder->getRealOrderId());
 	}
         // Give back cart to customer for new attempt to buy
-	if(Mage::getSingleton('customer/session')->isLoggedIn()) {
-           $this->oDibsModel->dibsflex_helper_redirect(
-             $this->oDibsModel->dibsflex_helper_cmsurl('sales/order/history'));
-         } else {
-           $this->oDibsModel->dibsflex_helper_redirect(
-             $this->oDibsModel->dibsflex_helper_cmsurl('checkout/cart/'));
-         }
- 
-      }    
-
+        $this->oDibsModel->dibsflex_helper_redirect(
+                $this->oDibsModel->dibsflex_helper_cmsurl('sales/order/history'));
+    }
      
     function cgiapiAction() {
         $this->oDibsModel->dibsflex_api_cgiapi();
