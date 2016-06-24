@@ -112,7 +112,7 @@ class dibs_fw_api extends dibs_fw_helpers {
         $aData['merchant'] = $this->dibsflex_helper_getconfig('mid');
         $aData['amount'] = $oOrderInfo->order->total;
         $aData['currency'] = $oOrderInfo->order->currency;
-        $aData['callbackurl'] =   $this->dibsflex_helper_getReturnURLs("callback");
+        $aData['callbackurl']   = $this->dibsflex_helper_getReturnURLs("callback");
         $aData['s_callbackfix'] = $this->dibsflex_helper_getReturnURLs("callbackfix");
         
         $sAccount = $this->dibsflex_helper_getconfig('account');
