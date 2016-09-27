@@ -150,7 +150,7 @@ class dibs_fw_helpers_cms extends Mage_Payment_Model_Method_Abstract {
         $order->setState($this->getConfigData('order_status_after_payment'),
                          true,
                          Mage::helper('dibsfw')->__('DIBSFW_LABEL_22'));
-
+        $order->getPayment()->setLastTransId($_POST['transact'])->save();
 	$order->save();
     }
     

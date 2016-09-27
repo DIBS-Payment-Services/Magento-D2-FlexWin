@@ -1,0 +1,10 @@
+app/code/community/Dibsfw/ app/code/community/Dibsfw/
+app/etc/modules/Dibsfw_Dibsfw.xml app/etc/modules/Dibsfw_Dibsfw.xml
+app/locale/da_DK/Mage_Dibsfw.csv  app/locale/da_DK/Mage_Dibsfw.csv
+app/locale/en_US/Mage_Dibsfw.csv  app/locale/en_US/Mage_Dibsfw.csv
+app/locale/nb_NO/Mage_Dibsfw.csv  app/locale/nb_NO/Mage_Dibsfw.csv
+app/locale/nn_NO/Mage_Dibsfw.csv  app/locale/nn_NO/Mage_Dibsfw.csv
+app/locale/sv_SE/Mage_Dibsfw.csv  app/locale/sv_SE/Mage_Dibsfw.csv
+app/design/frontend/base/default/template/dibsfw/ app/design/frontend/base/default/template/dibsfw/
+skin/adminhtml/base/default/images/Dibsfw/ skin/adminhtml/base/default/images/Dibsfw/
+skin/frontend/base/default/images/Dibsfw/ skin/frontend/base/default/images/Dibsfw/

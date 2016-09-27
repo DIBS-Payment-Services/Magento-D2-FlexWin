@@ -114,12 +114,16 @@ class dibs_fw_api extends dibs_fw_helpers {
         $aData['currency'] = $oOrderInfo->order->currency;
         $aData['callbackurl']   = $this->dibsflex_helper_getReturnURLs("callback");
         $aData['s_callbackfix'] = $this->dibsflex_helper_getReturnURLs("callbackfix");
-        
+        // for local callback testing.
+        $server = Mage::app()->getRequest()->getServer();
+        if(isset($server['callback_url'])) {
+            $aData['callbackurl'] = $server['callback_url'];
+        }
         $sAccount = $this->dibsflex_helper_getconfig('account');
         if((string)$sAccount != "") {
             $aData['account'] = $sAccount;
         }
-        
+        //
 	$sPaytype = $this->dibsflex_helper_getconfig('paytype');
         if((string)$sPaytype != '') {
             $aData['paytype'] = $this->dibsflex_api_getPaytype($sPaytype);
